@@ -35,9 +35,18 @@ namespace AdminPortal
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<Tools>();
 
+            //// Configure the database context
+            //builder.Services.AddDbContext<PeakHubContext>(options =>
+            //    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             // Configure the database context
+            //builder.Services.AddDbContext<PeakHubContext>(options =>
+            //    options.UseSqlServer(builder.Configuration.GetConnectionString("PeakDBD")));
+
             builder.Services.AddDbContext<PeakHubContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            {
+                options.UseLazyLoadingProxies();
+                options.UseSqlite(builder.Configuration.GetConnectionString("PeakDBD"));
+            });
 
             // Add Identity services for user authentication
             builder.Services.AddIdentity<User, IdentityRole>(options =>
