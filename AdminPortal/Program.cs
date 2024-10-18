@@ -3,6 +3,8 @@ using System.Net.Http.Headers;
 using System.Net.Mime;
 using WebAPI.Data;
 using AdminPortal.Models;
+using AdminPortal.Utilities;
+using Microsoft.EntityFrameworkCore;
 
 namespace AdminPortal
 {
@@ -31,6 +33,11 @@ namespace AdminPortal
             });
 
             builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<Tools>();
+
+            // Configure the database context
+            builder.Services.AddDbContext<PeakHubContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             // Add Identity services for user authentication
             builder.Services.AddIdentity<User, IdentityRole>(options =>
@@ -69,10 +76,12 @@ namespace AdminPortal
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseSession();
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                //pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Login}/{action=Login}/{id?}");
 
             app.Run();
         }

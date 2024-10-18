@@ -1,0 +1,17 @@
+﻿@model AdminPortal.ViewModels.LoginViewModel
+
+<div id="form-container">
+    <form id="loginForm" asp-action="Login" method="post">
+        @Html.ValidationMessage("loginFailed", "", new { @class = "text-danger" })
+        <input asp-for="UserName" class="form-control" placeholder="Username" />
+        <span asp-validation-for="UserName" class="text-danger"></span>
+
+        <input asp-for="Password" type="password" class="form-control" placeholder="Password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+
+        <input type="submit" value="Sign In" class="btn btn-primary" />
+        <a href="#" id="forgotBtn" class="forgot-password">Forgot Password?</a>
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    </form>
+</div>

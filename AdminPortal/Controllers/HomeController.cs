@@ -1,4 +1,6 @@
 using AdminPortal.Models;
+using AdminPortal.Utilities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -6,16 +8,32 @@ namespace AdminPortal.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly ILogger<LoginController> _logger;
+        private readonly HttpClient _httpClient;
+        private readonly Tools _tools;
+        private string userID => HttpContext.Session.GetString("UserId");
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(
+
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+            ILogger<LoginController> logger,
+            IHttpClientFactory httpClientFactory,
+            Tools tools)
         {
+            _tools = tools;
+            _userManager = userManager;
+            _signInManager = signInManager;
             _logger = logger;
+            _httpClient = httpClientFactory.CreateClient("api");
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            User user = await _tools.GetUser(userID);
+            return View(user);
         }
 
         public IActionResult Privacy()
