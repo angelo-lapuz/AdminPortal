@@ -51,10 +51,21 @@ namespace AdminPortal.Controllers
             {
                 var result = await response.Content.ReadAsStringAsync();
                 var user = JsonConvert.DeserializeObject<User>(result);
+                
+                // checks if user has admin role
+                var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+                
+                // if user is not an admin return error message else redirect to home
+                if (!isAdmin)
+                {
+                    ModelState.AddModelError("loginFailed", "You are not permitted to use this portal.");
+                }
+                else
+                {
+                    HttpContext.Session.SetString("UserId", user.Id);
 
-                HttpContext.Session.SetString("UserId", user.Id);
-
-                return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home");
+                }
             }
 
             // user has not confirmed email
