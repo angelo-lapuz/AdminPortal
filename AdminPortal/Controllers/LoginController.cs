@@ -54,6 +54,7 @@ namespace AdminPortal.Controllers
                 
                 // checks if user has admin role
                 var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+                _logger.LogInformation(isAdmin.ToString());
                 
                 // if user is not an admin return error message else redirect to home
                 if (!isAdmin)
