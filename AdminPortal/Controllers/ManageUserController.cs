@@ -1,7 +1,7 @@
 ﻿using AdminPortal.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using AdminPortal.Models;
+using WebAPI.Models;
 
 namespace AdminPortal.Controllers
 {
@@ -33,17 +33,26 @@ namespace AdminPortal.Controllers
             return View();
         }
 
+        // finds user by username and returns an error message if not found
+        // or redirects to ManageUser who retrieves and displays the use obj.
         [HttpPost]
-        public async Task<IActionResult> ManageUser(string userName)
+        public async Task<IActionResult> Index(string userName)
         {
             // get user by username
             var user = await _userManager.FindByNameAsync(userName);
+
             if (user == null) 
             {
                 ViewBag.UserNameSearchFailed = "Username could not be found";
-                return RedirectToAction("Index", "ManageUser");
+                return View();
             }
             
+            return RedirectToAction("ManageUser", new { searchedUserName = userName});
+        }
+
+        public async Task<IActionResult> ManageUser(string searchedUserName)
+        {
+            var user = await _userManager.FindByNameAsync(searchedUserName);
             return View(user);
         }
     }

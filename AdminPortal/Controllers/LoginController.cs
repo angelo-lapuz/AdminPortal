@@ -2,7 +2,7 @@
 using System.Net.Http;
 using AdminPortal.ViewModels;
 using Microsoft.AspNetCore.Identity;
-using AdminPortal.Models;
+using WebAPI.Models;
 using Newtonsoft.Json;
 using AdminPortal.Utilities;
 

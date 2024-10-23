@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using System.Net.Http.Headers;
 using System.Net.Mime;
 using WebAPI.Data;
-using AdminPortal.Models;
+//using AdminPortal.Models;
+using WebAPI.Models;
 using AdminPortal.Utilities;
 using Microsoft.EntityFrameworkCore;
 
